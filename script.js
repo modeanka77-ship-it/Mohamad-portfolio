@@ -1,0 +1,11 @@
+const menuButton = document.querySelector('.menu-toggle');
+const nav = document.querySelector('.nav');
+menuButton.addEventListener('click', () => { const open = nav.classList.toggle('open'); menuButton.setAttribute('aria-expanded', String(open)); menuButton.innerHTML = open ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>'; });
+document.querySelectorAll('.nav a').forEach(link => link.addEventListener('click', () => { nav.classList.remove('open'); menuButton.setAttribute('aria-expanded', 'false'); menuButton.innerHTML = '<i class="fa-solid fa-bars"></i>'; }));
+const revealObserver = new IntersectionObserver((entries, observer) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } }); }, { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+const sections = document.querySelectorAll('main section[id]');
+const links = document.querySelectorAll('.nav a');
+const sectionObserver = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) links.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id)); }); }, { rootMargin: '-35% 0px -55% 0px' });
+sections.forEach(section => sectionObserver.observe(section));
+document.getElementById('year').textContent = new Date().getFullYear();
